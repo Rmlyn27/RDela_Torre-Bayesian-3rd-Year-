@@ -1,0 +1,31 @@
+import numpy as np
+import pymc3 as pm
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+N = 100
+X = np.random.randn(N, 1) # For linear regression, X should be
+1-dimensional
+true_slope = 2
+true_intercept = -1
+noise = np.random.normal(0, 0.5, size=N)
+y = true_slope * X.flatten() + true_intercept + noise # Linear
+relationship with noise
+
+plt.scatter(X, y) 
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Synthetic Data')
+
+plt.show()
+
+alpha = pm.Normal('alpha', mu=0, sigma=10)
+beta = pm.Normal('beta', mu=0, sigma=10)
+sigma = pm.HalfNormal('sigma', sigma=1)
+
+mu = alpha + beta * X.flatten()
+
+y_obs = pm.Normal('y_obs', mu=mu, sigma=sigma, observed=y)
+trace = pm.sample(1000, tune=1000)
+pm.traceplot(trace)
+plt.show()
