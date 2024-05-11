@@ -23,3 +23,4 @@ plt.plot(mu, unnormalized_posterior)
 plt.xlabel("$\mu$ in meters")
 plt.ylabel("Unnormalized Posterior")
 plt.show()
+
